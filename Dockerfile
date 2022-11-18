@@ -1,3 +1,5 @@
 FROM pandoc/latex:latest-alpine
 
-RUN apk add ttf-dejavu
+RUN apk add --no-cache \
+    ttf-dejavu \
+    make
