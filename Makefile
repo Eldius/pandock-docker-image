@@ -2,9 +2,18 @@
 IMAGE_NAME=eldius/pandoc-alpine
 
 build:
-	docker build -t "$(IMAGE_NAME):$(shell git rev-parse --short HEAD)" .
+	# docker build -t "$(IMAGE_NAME):$(shell git rev-parse --short HEAD)" .
+	docker buildx build \
+		-t "$(IMAGE_NAME):$(shell git rev-parse --short HEAD)" \
+		-t "$(IMAGE_NAME):latest" \
+			.
 
-push: build
-	docker tag "$(IMAGE_NAME):$(shell git rev-parse --short HEAD)" "$(IMAGE_NAME):latest"
-	docker push "$(IMAGE_NAME):$(shell git rev-parse --short HEAD)"
-	docker push "$(IMAGE_NAME):latest"
+
+
+
+push:
+	docker buildx build \
+		-t "$(IMAGE_NAME):$(shell git rev-parse --short HEAD)" \
+		-t "$(IMAGE_NAME):latest" \
+		--push \
+			.
